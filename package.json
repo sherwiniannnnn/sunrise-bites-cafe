@@ -1,0 +1,33 @@
+{
+  "name": "sunrise-bites-cafe",
+  "version": "1.0.0",
+  "description": "Online Food Ordering System for Sunrise Bites Cafe",
+  "main": "index.html",
+  "scripts": {
+    "dev": "netlify dev",
+    "build": "echo 'No build process needed for static site'",
+    "setup-db": "node scripts/setup-database.js",
+    "setup-production": "node scripts/setup-production.js",
+    "verify": "node scripts/final-verification.js",
+    "deploy": "netlify deploy --prod --dir=.",
+    "test": "echo 'Open test/final-test.html in browser'"
+  },
+  "dependencies": {
+    "pg": "^8.11.3",
+    "bcryptjs": "^2.4.3"
+  },
+  "devDependencies": {
+    "netlify-cli": "^15.0.0"
+  },
+  "keywords": [
+    "restaurant",
+    "food-ordering",
+    "online-ordering",
+    "netlify",
+    "postgresql",
+    "fullstack",
+    "javascript"
+  ],
+  "author": "Sunrise Bites Cafe",
+  "license": "MIT"
+}

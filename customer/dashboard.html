@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customer.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-sun"></i>
+                <span>Sunrise Bites Cafe</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#orders">My Orders</a></li>
+                <li><a href="#" id="logoutBtn" class="nav-btn">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="customer-container">
+        <!-- Welcome Section -->
+        <section class="welcome-section">
+            <div class="container">
+                <div class="welcome-content">
+                    <h1>Good Morning, <span id="userName">Customer</span>! ☀️</h1>
+                    <p>Ready to start your day with a delicious breakfast?</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Cart Sidebar -->
+        <div class="cart-sidebar" id="cartSidebar">
+            <div class="cart-header">
+                <h3>Your Order</h3>
+                <button class="close-cart" id="closeCart">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="cart-items" id="cartItems">
+                <!-- Cart items will be added here -->
+            </div>
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <strong>Total: $<span id="cartTotal">0.00</span></strong>
+                </div>
+                <button class="btn primary" id="checkoutBtn">Checkout</button>
+                <button class="btn secondary" id="clearCartBtn">Clear Cart</button>
+            </div>
+        </div>
+
+        <!-- Menu Section -->
+        <section id="menu" class="menu-section">
+            <div class="container">
+                <h2>Our Breakfast Menu</h2>
+                <div class="menu-filters">
+                    <button class="filter-btn active" data-category="all">All Items</button>
+                    <button class="filter-btn" data-category="1">Breakfast Classics</button>
+                    <button class="filter-btn" data-category="2">Healthy Choices</button>
+                    <button class="filter-btn" data-category="3">Sweet Treats</button>
+                    <button class="filter-btn" data-category="4">Beverages</button>
+                    <button class="filter-btn" data-category="5">Sides & Extras</button>
+                </div>
+
+                <div id="menuContainer" class="menu-container">
+                    <!-- Menu will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="orders-section">
+            <div class="container">
+                <h2>My Recent Orders</h2>
+                <div id="ordersContainer" class="orders-container">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Floating Button -->
+    <div class="cart-floating-btn" id="cartFloatingBtn">
+        <i class="fas fa-shopping-cart"></i>
+        <span class="cart-count" id="cartCount">0</span>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/customer.js"></script>
+</body>
+</html>

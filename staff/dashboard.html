@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Staff Dashboard - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/staff.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-sun"></i>
+                <span>Sunrise Bites Staff</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#orders">Orders</a></li>
+                <li><a href="#kitchen">Kitchen</a></li>
+                <li><a href="#completed">Completed</a></li>
+                <li><a href="#" id="logoutBtn" class="nav-btn">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="staff-container">
+        <!-- Welcome Section -->
+        <section class="staff-welcome">
+            <div class="container">
+                <div class="welcome-content">
+                    <h1>Welcome, <span id="staffName">Staff</span>! 👨‍🍳</h1>
+                    <p id="staffRole">Restaurant Staff Dashboard</p>
+                    <div class="stats-grid" id="statsGrid">
+                        <!-- Stats will be loaded here -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Orders Section -->
+        <section id="orders" class="orders-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Order Management</h2>
+                    <div class="order-filters">
+                        <button class="filter-btn active" data-status="all">All Orders</button>
+                        <button class="filter-btn" data-status="pending">Pending</button>
+                        <button class="filter-btn" data-status="confirmed">Confirmed</button>
+                        <button class="filter-btn" data-status="preparing">Preparing</button>
+                        <button class="filter-btn" data-status="ready">Ready</button>
+                        <button class="filter-btn" data-status="completed">Completed</button>
+                    </div>
+                </div>
+
+                <div id="ordersContainer" class="orders-container">
+                    <!-- Orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Kitchen View Section -->
+        <section id="kitchen" class="kitchen-section">
+            <div class="container">
+                <h2>Kitchen Display</h2>
+                <div id="kitchenContainer" class="kitchen-container">
+                    <!-- Kitchen orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Completed Orders Section -->
+        <section id="completed" class="completed-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Recently Completed Orders</h2>
+                    <div class="time-filter">
+                        <select id="timeFilter">
+                            <option value="1">Last 1 hour</option>
+                            <option value="4">Last 4 hours</option>
+                            <option value="24" selected>Last 24 hours</option>
+                            <option value="48">Last 48 hours</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="completedContainer" class="completed-container">
+                    <!-- Completed orders will be loaded here -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Order Detail Modal -->
+    <div class="modal" id="orderModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Order Details - <span id="modalOrderNumber"></span></h3>
+                <button class="close-modal" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="order-info">
+                    <div class="info-group">
+                        <label>Customer:</label>
+                        <span id="modalCustomerName"></span>
+                    </div>
+                    <div class="info-group">
+                        <label>Phone:</label>
+                        <span id="modalCustomerPhone"></span>
+                    </div>
+                    <div class="info-group">
+                        <label>Order Time:</label>
+                        <span id="modalOrderTime"></span>
+                    </div>
+                    <div class="info-group">
+                        <label>Total Amount:</label>
+                        <span id="modalTotalAmount"></span>
+                    </div>
+                </div>
+                
+                <div class="order-items-modal">
+                    <h4>Order Items</h4>
+                    <div id="modalOrderItems"></div>
+                </div>
+
+                <div class="special-instructions">
+                    <h4>Special Instructions</h4>
+                    <p id="modalInstructions">None</p>
+                </div>
+
+                <div class="status-update">
+                    <h4>Update Status</h4>
+                    <div class="status-buttons">
+                        <button class="status-btn pending" data-status="pending">Pending</button>
+                        <button class="status-btn confirmed" data-status="confirmed">Confirmed</button>
+                        <button class="status-btn preparing" data-status="preparing">Preparing</button>
+                        <button class="status-btn ready" data-status="ready">Ready</button>
+                        <button class="status-btn completed" data-status="completed">Completed</button>
+                        <button class="status-btn cancelled" data-status="cancelled">Cancel</button>
+                    </div>
+                    <div class="status-notes">
+                        <textarea id="statusNotes" placeholder="Add notes for this status update..."></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/staff.js"></script>
+</body>
+</html>

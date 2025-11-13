@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-sun"></i>
+                    <span>Sunrise Bites</span>
+                </div>
+                <h1>Admin Login</h1>
+                <p>Administrative access only</p>
+            </div>
+
+            <form id="adminLoginForm">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="demo-credentials">
+                    <p><strong>Demo Admin Account:</strong></p>
+                    <p><strong>Username:</strong> admin</p>
+                    <p><strong>Password:</strong> admin123</p>
+                </div>
+
+                <button type="submit" class="auth-btn" id="adminLoginBtn">
+                    <span class="btn-text">Admin Sign In</span>
+                    <span class="btn-loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Signing In...
+                    </span>
+                </button>
+            </form>
+
+            <div class="auth-links">
+                <p><a href="../index.html">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Update admin login in auth.js
+        const adminLoginForm = document.getElementById('adminLoginForm');
+        if (adminLoginForm) {
+            adminLoginForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const loginBtn = document.getElementById('adminLoginBtn');
+                const btnText = loginBtn.querySelector('.btn-text');
+                const btnLoading = loginBtn.querySelector('.btn-loading');
+                
+                // Show loading state
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline-block';
+                loginBtn.disabled = true;
+
+                const formData = {
+                    username: document.getElementById('username').value,
+                    password: document.getElementById('password').value
+                };
+
+                try {
+                    const response = await fetch('/.netlify/functions/admin-login', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success) {
+                        // Save admin data and token
+                        localStorage.setItem('sunrise_admin', JSON.stringify(result.admin));
+                        localStorage.setItem('sunrise_admin_token', result.token);
+                        
+                        // Redirect to admin dashboard
+                        window.location.href = 'dashboard.html';
+                    } else {
+                        throw new Error(result.message);
+                    }
+                } catch (error) {
+                    alert('Login failed: ' + error.message);
+                } finally {
+                    // Reset button state
+                    btnText.style.display = 'inline-block';
+                    btnLoading.style.display = 'none';
+                    loginBtn.disabled = false;
+                }
+            });
+        }
+    </script>
+</body>
+</html>

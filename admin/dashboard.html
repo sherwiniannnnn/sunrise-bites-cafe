@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-sun"></i>
+                <span>Sunrise Bites Admin</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="#dashboard">Dashboard</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#users">Users</a></li>
+                <li><a href="#staff">Staff</a></li>
+                <li><a href="#analytics">Analytics</a></li>
+                <li><a href="#" id="logoutBtn" class="nav-btn">Logout</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="dashboard-section">
+            <div class="container">
+                <div class="section-header">
+                    <h1>Admin Dashboard</h1>
+                    <p>Welcome back, <span id="adminName">Admin</span>! Here's your business overview.</p>
+                </div>
+
+                <!-- Stats Grid -->
+                <div class="stats-grid" id="statsGrid">
+                    <!-- Stats will be loaded here -->
+                </div>
+
+                <!-- Charts Row -->
+                <div class="charts-row">
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Orders Overview</h3>
+                            <select id="ordersPeriod">
+                                <option value="7">Last 7 Days</option>
+                                <option value="30" selected>Last 30 Days</option>
+                                <option value="90">Last 90 Days</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="ordersChart"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="chart-card">
+                        <div class="chart-header">
+                            <h3>Revenue Report</h3>
+                            <select id="revenuePeriod">
+                                <option value="day">Daily</option>
+                                <option value="week">Weekly</option>
+                                <option value="month" selected>Monthly</option>
+                            </select>
+                        </div>
+                        <div class="chart-container">
+                            <canvas id="revenueChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Popular Items & Order Status -->
+                <div class="info-grid">
+                    <div class="info-card">
+                        <h3>Popular Items</h3>
+                        <div id="popularItems" class="popular-items">
+                            <!-- Popular items will be loaded here -->
+                        </div>
+                    </div>
+
+                    <div class="info-card">
+                        <h3>Today's Order Status</h3>
+                        <div id="orderStatus" class="order-status">
+                            <!-- Order status will be loaded here -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Management Section -->
+        <section id="menu" class="menu-management-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Menu Management</h2>
+                    <div class="section-actions">
+                        <button class="btn primary" onclick="adminApp.openMenuItemModal()">
+                            <i class="fas fa-plus"></i> Add Menu Item
+                        </button>
+                        <button class="btn secondary" onclick="adminApp.openCategoryModal()">
+                            <i class="fas fa-folder-plus"></i> Add Category
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Categories Tabs -->
+                <div class="categories-tabs" id="categoriesTabs">
+                    <!-- Categories will be loaded here -->
+                </div>
+
+                <!-- Menu Items Grid -->
+                <div id="menuItemsContainer" class="menu-items-grid">
+                    <!-- Menu items will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Users Management Section -->
+        <section id="users" class="users-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Customer Management</h2>
+                    <div class="section-info">
+                        <span id="usersCount">0 customers</span>
+                    </div>
+                </div>
+
+                <div class="users-table-container">
+                    <table class="users-table" id="usersTable">
+                        <thead>
+                            <tr>
+                                <th>Customer</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Orders</th>
+                                <th>Total Spent</th>
+                                <th>Joined</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="usersTableBody">
+                            <!-- Users will be loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="pagination" id="usersPagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Staff Management Section -->
+        <section id="staff" class="staff-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Staff Management</h2>
+                    <button class="btn primary" onclick="adminApp.openStaffModal()">
+                        <i class="fas fa-user-plus"></i> Add Staff Member
+                    </button>
+                </div>
+
+                <div class="staff-grid" id="staffGrid">
+                    <!-- Staff members will be loaded here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Analytics Section -->
+        <section id="analytics" class="analytics-section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Business Analytics</h2>
+                    <div class="analytics-filters">
+                        <select id="analyticsPeriod">
+                            <option value="7">Last 7 Days</option>
+                            <option value="30" selected>Last 30 Days</option>
+                            <option value="90">Last 90 Days</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="analytics-grid">
+                    <div class="analytics-card full-width">
+                        <h3>Order Trends</h3>
+                        <div class="chart-container">
+                            <canvas id="analyticsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h4>Performance Metrics</h4>
+                        <div id="performanceMetrics" class="metrics-list">
+                            <!-- Metrics will be loaded here -->
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h4>Quick Actions</h4>
+                        <div class="quick-actions">
+                            <button class="action-btn" onclick="adminApp.exportData('orders')">
+                                <i class="fas fa-download"></i> Export Orders
+                            </button>
+                            <button class="action-btn" onclick="adminApp.exportData('users')">
+                                <i class="fas fa-download"></i> Export Users
+                            </button>
+                            <button class="action-btn" onclick="adminApp.generateReport()">
+                                <i class="fas fa-chart-bar"></i> Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Menu Item Modal -->
+    <div class="modal" id="menuItemModal">
+        <div class="modal-content large">
+            <div class="modal-header">
+                <h3 id="menuItemModalTitle">Add Menu Item</h3>
+                <button class="close-modal" onclick="adminApp.closeMenuItemModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="menuItemForm">
+                    <input type="hidden" id="menuItemId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemName">Item Name *</label>
+                            <input type="text" id="itemName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemPrice">Price ($) *</label>
+                            <input type="number" id="itemPrice" step="0.01" min="0" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="itemDescription">Description</label>
+                        <textarea id="itemDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="itemCategory">Category *</label>
+                            <select id="itemCategory" required>
+                                <!-- Categories will be loaded here -->
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="itemPrepTime">Preparation Time (minutes)</label>
+                            <input type="number" id="itemPrepTime" value="15" min="1">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="itemAvailable" checked>
+                            <span class="checkmark"></span>
+                            Available for ordering
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn secondary" onclick="adminApp.closeMenuItemModal()">Cancel</button>
+                <button type="button" class="btn primary" onclick="adminApp.saveMenuItem()">Save Item</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Category Modal -->
+    <div class="modal" id="categoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="categoryModalTitle">Add Category</h3>
+                <button class="close-modal" onclick="adminApp.closeCategoryModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="categoryForm">
+                    <input type="hidden" id="categoryId">
+                    <div class="form-group">
+                        <label for="categoryName">Category Name *</label>
+                        <input type="text" id="categoryName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryDescription">Description</label>
+                        <textarea id="categoryDescription" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="categoryActive" checked>
+                            <span class="checkmark"></span>
+                            Active category
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn secondary" onclick="adminApp.closeCategoryModal()">Cancel</button>
+                <button type="button" class="btn primary" onclick="adminApp.saveCategory()">Save Category</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Staff Modal -->
+    <div class="modal" id="staffModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="staffModalTitle">Add Staff Member</h3>
+                <button class="close-modal" onclick="adminApp.closeStaffModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="staffForm">
+                    <input type="hidden" id="staffId">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="staffStaffId">Staff ID *</label>
+                            <input type="text" id="staffStaffId" required placeholder="e.g., SB004">
+                        </div>
+                        <div class="form-group">
+                            <label for="staffRole">Role *</label>
+                            <select id="staffRole" required>
+                                <option value="chef">Chef</option>
+                                <option value="server">Server</option>
+                                <option value="manager">Manager</option>
+                                <option value="cashier">Cashier</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="staffFullName">Full Name *</label>
+                        <input type="text" id="staffFullName" required>
+                    </div>
+                    <div class="form-group" id="staffPasswordGroup">
+                        <label for="staffPassword">Password *</label>
+                        <input type="password" id="staffPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="staffActive" checked>
+                            <span class="checkmark"></span>
+                            Active staff member
+                        </label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn secondary" onclick="adminApp.closeStaffModal()">Cancel</button>
+                <button type="button" class="btn primary" onclick="adminApp.saveStaff()">Save Staff</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/main.js"></script>
+    <script src="../js/admin.js"></script>
+</body>
+</html>

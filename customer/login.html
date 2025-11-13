@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Login - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i class="fas fa-sun"></i>
+                    <span>Sunrise Bites</span>
+                </div>
+                <h1>Customer Login</h1>
+                <p>Welcome back! Please sign in to your account.</p>
+            </div>
+
+            <form id="loginForm">
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" required>
+                </div>
+
+                <div class="demo-credentials">
+                    <p><strong>Demo Account:</strong><br>
+                    Email: customer@example.com<br>
+                    Password: demo123</p>
+                </div>
+
+                <button type="submit" class="auth-btn" id="loginBtn">
+                    <span class="btn-text">Sign In</span>
+                    <span class="btn-loading" style="display: none;">
+                        <i class="fas fa-spinner fa-spin"></i> Signing In...
+                    </span>
+                </button>
+            </form>
+
+            <div class="auth-links">
+                <p>Don't have an account? <a href="signup.html">Sign up here</a></p>
+                <p><a href="../index.html">← Back to Home</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script src="../js/auth.js"></script>
+</body>
+</html>

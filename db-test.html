@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Database Test - Sunrise Bites Cafe</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .test-container {
+            max-width: 800px;
+            margin: 100px auto 50px;
+            padding: 20px;
+        }
+        
+        .test-card {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+        
+        .test-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: background 0.3s;
+        }
+        
+        .test-btn:hover {
+            background: var(--secondary);
+        }
+        
+        .test-btn:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        .test-result {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 8px;
+            background: #f8f9fa;
+            border-left: 4px solid var(--primary);
+        }
+        
+        .success {
+            border-left-color: #28a745;
+            background: #d4edda;
+        }
+        
+        .error {
+            border-left-color: #dc3545;
+            background: #f8d7da;
+        }
+        
+        .loading {
+            color: var(--primary);
+        }
+        
+        pre {
+            background: #2d3047;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-sun"></i>
+                <span>Sunrise Bites Cafe</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="db-test.html" class="nav-btn">DB Test</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="test-container">
+        <div class="test-card">
+            <h1><i class="fas fa-database"></i> Database Connection Test</h1>
+            <p>Test the connection between your frontend and Neon PostgreSQL database.</p>
+            
+            <div class="test-buttons">
+                <button class="test-btn" onclick="testConnection()">
+                    <i class="fas fa-plug"></i> Test Connection
+                </button>
+                <button class="test-btn" onclick="checkTables()">
+                    <i class="fas fa-table"></i> Check Tables
+                </button>
+                <button class="test-btn" onclick="getSampleData()">
+                    <i class="fas fa-utensils"></i> Get Sample Menu
+                </button>
+                <button class="test-btn" onclick="resetTests()">
+                    <i class="fas fa-redo"></i> Reset Tests
+                </button>
+            </div>
+            
+            <div id="testResults">
+                <!-- Test results will appear here -->
+            </div>
+        </div>
+        
+        <div class="test-card">
+            <h2><i class="fas fa-info-circle"></i> Setup Instructions</h2>
+            <ol>
+                <li>Create a Neon PostgreSQL database at <a href="https://neon.tech" target="_blank">neon.tech</a></li>
+                <li>Run the SQL setup scripts in your database</li>
+                <li>Set environment variables in Netlify:
+                    <ul>
+                        <li><code>DATABASE_URL</code> - Your Neon database connection string</li>
+                    </ul>
+                </li>
+                <li>Deploy to Netlify with serverless functions</li>
+                <li>Test the connection using the buttons above</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        const API_BASE = '/.netlify/functions';
+        
+        async function testConnection() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result loading"><i class="fas fa-spinner fa-spin"></i> Testing database connection...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/test-connection`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    resultsDiv.innerHTML = `
+                        <div class="test-result success">
+                            <h3><i class="fas fa-check-circle"></i> Connection Successful!</h3>
+                            <p><strong>Database Time:</strong> ${new Date(data.data.current_time).toLocaleString()}</p>
+                            <p><strong>PostgreSQL Version:</strong> ${data.data.postgres_version.split(' ')[1]}</p>
+                            <pre>${JSON.stringify(data, null, 2)}</pre>
+                        </div>
+                    `;
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h3><i class="fas fa-times-circle"></i> Connection Failed</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                        <p>Make sure your Neon database is running and environment variables are set correctly.</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function checkTables() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result loading"><i class="fas fa-spinner fa-spin"></i> Checking database tables...</div>';
+            
+            try {
+                const response = await fetch(`${API_BASE}/check-tables`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    if (data.allTablesExist) {
+                        resultsDiv.innerHTML = `
+                            <div class="test-result success">
+                                <h3><i class="fas fa-check-circle"></i> All Tables Found!</h3>
+                                <p><strong>Tables Count:</strong> ${data.tableCount}</p>
+                                <p><strong>Existing Tables:</strong> ${data.existingTables.join(', ')}</p>
+                                <pre>${JSON.stringify(data, null, 2)}</pre>
+                            </div>
+                        `;
+                    } else {
+                        resultsDiv.innerHTML = `
+                            <div class="test-result error">
+                                <h3><i class="fas fa-exclamation-triangle"></i> Missing Tables</h3>
+                                <p><strong>Missing:</strong> ${data.missingTables.join(', ')}</p>
+                                <p><strong>Found:</strong> ${data.existingTables.join(', ')}</p>
+                                <p>Please run the setup SQL scripts in your database.</p>
+                                <pre>${JSON.stringify(data, null, 2)}</pre>
+                            </div>
+                        `;
+                    }
+                } else {
+                    throw new Error(data.message);
+                }
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h3><i class="fas fa-times-circle"></i> Table Check Failed</h3>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        async function getSampleData() {
+            const resultsDiv = document.getElementById('testResults');
+            resultsDiv.innerHTML = '<div class="test-result loading"><i class="fas fa-spinner fa-spin"></i> Fetching sample menu data...</div>';
+            
+            try {
+                // This function will be implemented in Phase 3
+                const response = await fetch(`${API_BASE}/get-menu`);
+                if (!response.ok) {
+                    throw new Error('Menu API not implemented yet');
+                }
+                const data = await response.json();
+                
+                resultsDiv.innerHTML = `
+                    <div class="test-result success">
+                        <h3><i class="fas fa-check-circle"></i> Sample Data Retrieved!</h3>
+                        <p><strong>Menu Items Found:</strong> ${data.data.length}</p>
+                        <pre>${JSON.stringify(data, null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                resultsDiv.innerHTML = `
+                    <div class="test-result error">
+                        <h3><i class="fas fa-times-circle"></i> Sample Data Unavailable</h3>
+                        <p><strong>Note:</strong> This feature will be available in Phase 3</p>
+                        <p><strong>Error:</strong> ${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+        
+        function resetTests() {
+            document.getElementById('testResults').innerHTML = '';
+        }
+        
+        // Add event listeners for buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Database test page loaded');
+            console.log('Make sure to:');
+            console.log('1. Set up Neon PostgreSQL database');
+            console.log('2. Run the SQL setup scripts');
+            console.log('3. Configure environment variables in Netlify');
+            console.log('4. Deploy with serverless functions enabled');
+        });
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html>
