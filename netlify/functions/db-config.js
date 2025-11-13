@@ -6,7 +6,7 @@ const connectionString = process.env.NETLIFY_DATABASE_URL || process.env.DATABAS
 
 const pool = new Pool({
   connectionString,
-  ssl: process.env.NODE_ENV === 'import' ? { rejectUnauthorized: false } : false
+  ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
 });
 
 // Test database connection

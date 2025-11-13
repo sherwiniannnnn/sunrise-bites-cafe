@@ -3,7 +3,7 @@
   functions = "netlify/functions"
 
 [build.environment]
-  NODE_ENV = "import"
+  NODE_ENV = "production"
 
 [[redirects]]
   from = "/api/*"
